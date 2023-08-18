@@ -3,6 +3,36 @@ bits 16 ;Setting the code to 16 bit code
 
 
 %define ENDL 0x0D, 0x0A
+#
+# FAT12 header
+#
+
+;Bios parameter block
+
+jmp short start
+nop
+
+bdb_oem:                    db 'MSWIN4.1'
+bdb_bytes_per_sector:       dw 512
+bdb_sectors_per_cluster:    db 1
+bdb_reserved_sectors:       db 1
+bdb_fat_count:              db 2
+bdb_dir_entries_count:      dw 0E0h
+bdb_total_sectors:          dw 2880
+bdb_media_descriptor_type:  db 0F0h
+bdb_sectors_per_fat:        dw 9
+bdb_sectors_per_track:      dw 18
+bdb_heads:                  dw 2
+bdb_hidden_sectors:         dd 0
+bdb_larger_sector_count:    dd 0
+
+; Extended boot sector
+ebr_drive_number:           db 0
+                            db 0 ;Reserved
+ebr_signature:              db 29h
+ebr_volume_id:              db 10h, 24h, 66h, 63h
+ebr_volume_label:           db "JUANIX OS  " ; Has to be exactly 11 bytes
+ebr_system_id:              db "FAT12   " ; Has to be exactly 8 bytes
 
 start: 
     jmp main
